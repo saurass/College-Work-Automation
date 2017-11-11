@@ -1,5 +1,6 @@
 @php
     $i=1;
+    $flag=0;
 @endphp
 <form action="/addmarks/add" method="post">
     {{ csrf_field() }}
@@ -26,6 +27,9 @@
             </th>
         </tr>
         @foreach($students as $student)
+            @php
+                $flag=0;
+            @endphp
             <tr>
                 <td>
                     {{ $student->st_id }}
@@ -36,9 +40,39 @@
                 <td>
                     {{ $exam->max_mark }}
                 </td>
-                <td>
-                    <input type="text" size="3" maxlength="3" style="width: 50px" id="{{ 'mark'.$i }}" name="{{ 'mark'.$i }}" required>
-                </td>
+
+                @foreach($dbr as $dbrs)
+                    @if($dbrs->st_id == $student->st_id)
+                        <td>
+                            <input type="text" size="3" maxlength="3" style="width: 50px" id="{{ 'mark'.$i }}"
+                                   value="DB" name="{{ 'mark'.$i }}" readonly required>
+                        </td>
+                        @php
+                            $flag=1;
+                        @endphp
+                        @break
+                    @endif
+                @endforeach
+
+                @foreach($sdbr as $sdbrs)
+                    @if($sdbrs->st_id == $student->st_id)
+                        <td>
+                            <input type="text" size="3" maxlength="3" style="width: 50px" id="{{ 'mark'.$i }}"
+                                   value="SDB" name="{{ 'mark'.$i }}" readonly required>
+                        </td>
+                        @php
+                            $flag=1;
+                        @endphp
+                        @break
+                    @endif
+                @endforeach
+
+                @if($flag==0)
+                    <td>
+                        <input type="text" size="3" maxlength="3" style="width: 50px" id="{{ 'mark'.$i }}"
+                               name="{{ 'mark'.$i }}" required>
+                    </td>
+                @endif
             </tr>
             @php
                 $i++;

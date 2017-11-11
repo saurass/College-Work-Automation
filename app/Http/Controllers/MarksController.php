@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Addexam;
 use App\Assignrole;
+use App\Debarred;
 use App\Facultylogin;
 use App\Mark;
+use App\Pro_debarred;
 use App\Student;
+use App\Sub_debarred;
 use App\Subject;
 use Illuminate\Http\Request;
 
@@ -64,34 +67,49 @@ class MarksController extends Controller
         $subject=$_REQUEST['sub'];
         $section=$_REQUEST['sec'];
 
-        $branch=Assignrole::where('section',$section)->first()->branch;
+        $branch=Student::where('section',$section)->first()->branch;
         $semester=Subject::where('sub_id',$subject)->first()->semester;
         $subcat=Subject::where('sub_id',$subject)->first()->category;
 
         if($subcat=='T' or $subcat=='O')
         {
-            $exams=Addexam::where('branch',$branch)
-                ->where('semester',$semester)
-                ->where('status','=',1)
-                ->where('exam_name','LIKE','%AS%')
+            $exams=Addexam::where('exam_name','LIKE','%AS%')
                 ->orWhere('exam_name','LIKE','%ST%')
                 ->orWhere('exam_name','LIKE','%PUT%')
+                ->where('branch',$branch)
+                ->where('semester',$semester)
                 ->get();
+            $exams=$exams->where('status',1);
+
+            $examd=[];
+            foreach ($exams as $exam)
+            {
+                if($exam->branch == $branch and $exam->semester==$semester)
+                    $examd[]=$exam->exam_name;
+            }
+
         }
         if($subcat=='P')
         {
-            $exams=Addexam::where('branch',$branch)
-                ->where('semester',$semester)
-                ->where('status','=',1)
-                ->where('exam_name','LIKE','%REC%')
+            $exams=Addexam::where('exam_name','LIKE','%REC%')
                 ->orWhere('exam_name','LIKE','%VV%')
+                ->where('branch',$branch)
+                ->where('semester',$semester)
                 ->get();
+            $exams=$exams->where('status',1);
+
+            $examd=[];
+            foreach ($exams as $exam)
+            {
+                if($exam->branch == $branch and $exam->semester==$semester)
+                    $examd[]=$exam->exam_name;
+            }
         }
 
         $data=[];
-        foreach ($exams as $e)
+        foreach ($examd as $e)
         {
-            $data[]=$e->exam_name;
+            $data[]=$e;
         }
         $datas=array_unique($data);
         sort($datas);
@@ -121,6 +139,7 @@ class MarksController extends Controller
             ->where('sub_id',$subject)
             ->where('examname',$exam)
             ->first();
+
         if(isset($data->id))
         {
             $d='false';
@@ -134,11 +153,19 @@ class MarksController extends Controller
         if ($d=='true')
         {
             $semester=Subject::where('sub_id',$subject)->first()->semester;
-            $branch=Assignrole::where('section',$section)->first()->branch;
+            $branch=Student::where('section',$section)->first()->branch;
 
             $students=Student::where('branch',$branch)
                 ->where('semester',$semester)
                 ->where('section',$section)
+                ->get();
+
+            $dbr=Debarred::whereIn('st_id',$students)
+                ->get();
+            $sdbr=Sub_debarred::whereIn('st_id',$students)
+                    ->where('exam',$exam)
+                ->get();
+            $pcdbr=Pro_debarred::whereIn('st_id',$students)
                 ->get();
 
             $exam=Addexam::where('branch',$branch)
@@ -151,7 +178,10 @@ class MarksController extends Controller
                 ->with('exam',$exam)
                 ->with('subject',$subject)
                 ->with('branch',$branch)
-                ->with('section',$section);
+                ->with('section',$section)
+                ->with('dbr',$dbr)
+                ->with('sdbr',$sdbr)
+                ->with('pcdbr',$pcdbr);
         }
         if($d=='false')
             return 'EXAM MARKS ALREADY ADDED !';
@@ -252,6 +282,14 @@ class MarksController extends Controller
             ->where('exam_name',$exam)
             ->first();
 
+        $dbr=Debarred::whereIn('st_id',$students)
+            ->get();
+        $sdbr=Sub_debarred::whereIn('st_id',$students)
+            ->where('exam',$exam)
+            ->get();
+        $pcdbr=Pro_debarred::whereIn('st_id',$students)
+            ->get();
+
         $arr=[];
         foreach ($students as $student)
         {
@@ -268,7 +306,10 @@ class MarksController extends Controller
                 ->with('subject', $subject)
                 ->with('branch', $branch)
                 ->with('section', $section)
-                ->with('marks', $marks);
+                ->with('marks', $marks)
+                ->with('dbr',$dbr)
+                ->with('sdbr',$sdbr)
+                ->with('pcdbr',$pcdbr);
         }
         else
         {
