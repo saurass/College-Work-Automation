@@ -16,7 +16,7 @@
     <p id="semester">{{$student->semester}}</p>
 </div><br><br>
 
-@if($debarred!="DB")
+@if($debarred!="DB" and $debarred!='NM')
     <b>Subject:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <select name="sub" id="subject" onchange="getExam()" class="browser-default" required>
         <option value="">SELECT</option>
@@ -41,6 +41,9 @@
     <b>Exam:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <select name="exam" id="exam" class="browser-default" required>
         <option value="">SELECT</option>
+        @foreach($exams as $exam)
+            <option value="{{ $exam->exam_name }}">{{ $exam->exam_name }}</option>
+        @endforeach
     </select><br><br>
 </div>
 

@@ -225,11 +225,13 @@ Route::group(['middleware' => ['auth', 'AssignRole']], function () {
     Route::get('/showTypeExam', 'MarksController@showTypeExam');
     Route::get('/getExamName', 'MarksController@getExamName');
 
-    Route::resource('/debarred', 'DebarredController');
+
+    //------------Debarrs Routes---------SHIVI--------SAURASS----------------
     Route::get('/debar', 'DebarredController@index');
     Route::get('/getinfo', 'DebarredController@getinfo');
-    Route::get('/getInfoExam','DebarredController@getInfoExam');
-    Route::get('/AddDebarGetExam','DebarredController@AddDebarGetExam');
+    Route::post('/debarred','DebarredController@store');
+    Route::get('/getInfoExam', 'DebarredController@getInfoExam');
+    Route::get('/AddDebarGetExam', 'DebarredController@AddDebarGetExam');
 
 });
 

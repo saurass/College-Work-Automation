@@ -45,6 +45,7 @@
                             <option value="SDB">SDB</option>
                             <option value="PC">PC</option>
                             <option value="UFM">UFM</option>
+                            <option value="NM">Normal</option>
                         </select><br><br>
                     </div>
 

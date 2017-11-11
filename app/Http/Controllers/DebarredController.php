@@ -83,6 +83,30 @@ class DebarredController extends Controller
             ]);
         }
 
+        elseif ($debarred== 'NM')
+        {
+            Sub_debarred::where('st_id',$request->st_id)
+                        ->where('exam',$request->exam)
+                        ->delete();
+
+            Pro_debarred::where('st_id',$request->st_id)
+                        ->where('exam',$request->exam)
+                        ->delete();
+
+            Debarred::where('st_id',$request->st_id)
+                    ->where('exam',$request->exam)
+                    ->delete();
+
+            ufm::where('st_id',$request->st_id)
+                ->where('exam',$request->exam)
+                ->delete();
+
+            Mark::where('st_id',$request->st_id)
+                ->where('examname',$request->exam)
+                ->update(['marks_obtained'=>null]);
+
+        }
+
         else
         {
             ufm::updateOrCreate([
