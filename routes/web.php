@@ -100,9 +100,15 @@ Route::group(['middleware' => ['auth', 'AssignRole']], function () {
 Route::group(['middleware' => ['auth', 'AssignRole']], function () {
 
     Route::get('/viewAssignRole', 'AssignRoleController@show');
+    Route::put('/assignrole/{id}/updateStud','AssignRoleController@UpdateOEStud');
     Route::resource('/assignrole', 'AssignRoleController');
     Route::post('/assignrole/showall', 'AssignRoleController@showall');
     Route::post('/assignrole/create', 'AssignRoleController@create');
+
+    Route::put('/updateOEStud/{sec}/{sem}/{fac}/{sub}','AssignRoleController@updateOEStuds');
+    Route::get('/assignrolesuccessOE',function (){
+        return view('AssignRole.OESuccess');
+    });
 
     //------------Routes to AssignRole Ajax Requests -- SAURASS---------
     //========Saurass ----      26/09/2017  --------------------
@@ -110,6 +116,7 @@ Route::group(['middleware' => ['auth', 'AssignRole']], function () {
     Route::get('/viewAssignSem2', 'AssignRoleController@viewAssignSem2');
     Route::get('/viewAssignGetData', 'AssignRoleController@viewAssignGetData');
     Route::get('/viewAssignGetData2', 'AssignRoleController@viewAssignGetData2');
+    Route::get('/getClassOEDetails','AssignRoleController@getClassOEDetails');
 
     Route::get('/showSem', 'GeneralController@showSem');
     Route::get('/showCategory', 'GeneralController@showCategory');

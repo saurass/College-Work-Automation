@@ -348,7 +348,7 @@ class GeneralController extends Controller
         $datastr='<option value="">SELECT</option>';
         foreach ($datas as $b)
         {
-            $datastr=$datastr.'<option value="'.$b->userid.'">'.$b->name.'</option>';
+            $datastr=$datastr.'<option value="'.$b->userid.'">'.$b->name.'('.$b->userid.')'.'</option>';
         }
         return $datastr;
     }

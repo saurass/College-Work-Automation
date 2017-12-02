@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Student;
 use App\Subject;
 use App\Facultylogin;
 use Illuminate\Http\Request;
@@ -109,6 +110,15 @@ class SubjectController extends Controller
         $str=$_REQUEST['str'];
         $username=session('username');
         $category=Facultylogin::where('userid',$username)->first()->category;
+        $sems=Student::select('semester')
+            ->distinct()
+            ->orderBy('semester','asc')
+            ->get(['semester']);
+
+        $branchs=Student::select('branch')
+                            ->distinct()
+                            ->orderBy('branch','asc')
+                            ->get(['branch']);
 
         if($category=="HOD")
         {
@@ -124,7 +134,10 @@ class SubjectController extends Controller
             if (!isset($SubData->sub_id) or $SubData->sub_id == Null)
                 return view('Faculty.NotFound');
             elseif ($SubData->branch == $department)
-                return view('Subject.EditSubject',compact('category','department'))->with('SubData',$SubData);
+                return view('Subject.EditSubject',compact('category','department'))
+                    ->with('SubData',$SubData)
+                    ->with('branchs',$branchs)
+                    ->with('sems',$sems);
             else
                 return view('Faculty.HodCantAccessFaculty');
         }
@@ -141,7 +154,10 @@ class SubjectController extends Controller
             if (!isset($SubData->sub_id) or $SubData->sub_id == Null)
                 return view('Faculty.NotFound');
             else
-                return view('Subject.EditSubject',compact('SubData','category','department'));
+                return view('Subject.EditSubject',compact('SubData','category','department'))
+                    ->with('SubData',$SubData)
+                    ->with('branchs',$branchs)
+                    ->with('sems',$sems);;
         }
         else
         {
