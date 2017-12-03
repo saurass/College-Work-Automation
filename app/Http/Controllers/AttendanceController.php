@@ -28,8 +28,6 @@ class AttendanceController extends Controller
     
     public function store(Request $request)
     {
-        //
-
         $st_id=$request->rollno;
         $totalAttended=$request->totalAttended;
         $Attended=$request->Attended;
@@ -40,7 +38,7 @@ class AttendanceController extends Controller
         }
 
         echo "<script> alert('Attendance Updated'); </script>";
-        return view('attendance.addattendance');
+        return view('errors.success');
     }
 
    public function edit()
