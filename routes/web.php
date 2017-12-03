@@ -100,13 +100,13 @@ Route::group(['middleware' => ['auth', 'AssignRole']], function () {
 Route::group(['middleware' => ['auth', 'AssignRole']], function () {
 
     Route::get('/viewAssignRole', 'AssignRoleController@show');
-    Route::put('/assignrole/{id}/updateStud','AssignRoleController@UpdateOEStud');
+    Route::put('/assignrole/{id}/updateStud', 'AssignRoleController@UpdateOEStud');
     Route::resource('/assignrole', 'AssignRoleController');
     Route::post('/assignrole/showall', 'AssignRoleController@showall');
     Route::post('/assignrole/create', 'AssignRoleController@create');
 
-    Route::put('/updateOEStud/{sec}/{sem}/{fac}/{sub}','AssignRoleController@updateOEStuds');
-    Route::get('/assignrolesuccessOE',function (){
+    Route::put('/updateOEStud/{sec}/{sem}/{fac}/{sub}', 'AssignRoleController@updateOEStuds');
+    Route::get('/assignrolesuccessOE', function () {
         return view('AssignRole.OESuccess');
     });
 
@@ -116,7 +116,7 @@ Route::group(['middleware' => ['auth', 'AssignRole']], function () {
     Route::get('/viewAssignSem2', 'AssignRoleController@viewAssignSem2');
     Route::get('/viewAssignGetData', 'AssignRoleController@viewAssignGetData');
     Route::get('/viewAssignGetData2', 'AssignRoleController@viewAssignGetData2');
-    Route::get('/getClassOEDetails','AssignRoleController@getClassOEDetails');
+    Route::get('/getClassOEDetails', 'AssignRoleController@getClassOEDetails');
 
     Route::get('/showSem', 'GeneralController@showSem');
     Route::get('/showCategory', 'GeneralController@showCategory');
@@ -236,9 +236,19 @@ Route::group(['middleware' => ['auth', 'AssignRole']], function () {
     //------------Debarrs Routes---------SHIVI--------SAURASS----------------
     Route::get('/debar', 'DebarredController@index');
     Route::get('/getinfo', 'DebarredController@getinfo');
-    Route::post('/debarred','DebarredController@store');
+    Route::post('/debarred', 'DebarredController@store');
     Route::get('/getInfoExam', 'DebarredController@getInfoExam');
     Route::get('/AddDebarGetExam', 'DebarredController@AddDebarGetExam');
+
+
+    //-----------------------Settings Routes ========= Only for ADMIN-------------------------
+    //=============BulkChange Student====================
+    Route::get('/BulkChangeStud','SettingsController@BulkChangeStud');
+    Route::put('/BulkChangeStud/update','SettingsController@BulkChangeStudUpdate');
+
+    Route::get('/SetGetSec','SettingsController@SetGetSec');
+    Route::get('/SetGetSem','SettingsController@SetGetSem');
+    Route::get('/SetGetDetail','SettingsController@SetGetDetail');
 
 });
 
