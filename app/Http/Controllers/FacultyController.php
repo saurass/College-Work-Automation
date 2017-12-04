@@ -122,10 +122,10 @@ class FacultyController extends Controller
         $str = $request->sal . ' ' . $request->name;
 
         Facultylogin::create([
-            'branch'=>$request->branch,
-            'category'=>$request->category,
-            'name'=>$str,
-            'userid'=>$request->userid
+            'branch' => $request->branch,
+            'category' => $request->category,
+            'name' => $str,
+            'userid' => $request->userid
         ]);
         return redirect('/managefaculty/create?errors=Sucess');
     }
@@ -163,14 +163,14 @@ class FacultyController extends Controller
     {
         $branch = $_REQUEST['branch'];
         $NewId = Facultylogin::where('branch', $branch)
-                    ->distinct()
-                    ->orderBy('userid','desc')
-                    ->first()->userid;
-        $next=trim($NewId,$branch);
-        $next=trim($next,strtolower($branch));
-        if(is_int($next))
-            return strtolower($branch).($next+1);
+            ->distinct()
+            ->orderBy('userid', 'desc')
+            ->first()->userid;
+        $next = trim($NewId, $branch);
+        $next = trim($next, strtolower($branch));
+        if (is_int($next))
+            return strtolower($branch) . ($next + 1);
         else
-            return strtolower($branch).$next;
+            return strtolower($branch) . $next;
     }
 }
