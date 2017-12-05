@@ -126,7 +126,8 @@
         <li><a href="{{url('./assignrole')}}">assign role</a></li>
         @if($category=='ADMIN')
             <li><a href="{{url('./addExam/new')}}">exam</a></li>
-    @endif
+            <li><a href="{{url('./BulkAddStud')}}">Bulk Student</a></li>
+        @endif
     <!-- <li><a href="#">upload students</a></li>
         <li><a href="#">upload subjects</a></li> -->
         <!-- <li><a href="#">upload faculty</a></li>

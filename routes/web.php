@@ -250,6 +250,12 @@ Route::group(['middleware' => ['auth', 'AssignRole']], function () {
     Route::get('/SetGetSem','SettingsController@SetGetSem');
     Route::get('/SetGetDetail','SettingsController@SetGetDetail');
 
+
+    //==========================================Bulk Add Students=======================================================
+
+    Route::get('/BulkAddStud','StudentController@BulkAddStud');
+    Route::post('/addBulkStud','StudentController@addBulkStud');
+
 });
 
 

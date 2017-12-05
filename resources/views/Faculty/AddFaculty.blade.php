@@ -55,7 +55,6 @@
 
                     <select name="sal" class="btn-block">
                         <option value="Mr.">Mr.</option>
-                        <option value="Mr.">Mrs.</option>
                         <option value="Mr.">Ms.</option>
                         <option value="Mr.">Dr.</option>
                     </select>
